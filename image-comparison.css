@@ -1,0 +1,85 @@
+.imgcompare {
+    --ar: var( --_w ) / var( --_h );
+    --_w: 16;
+    --_h: 9;
+    --_bg: var( --o-imgcompare-background, #ddd );
+    --_thumb-bg: var( --o-imgcompare-thumbBackground, #333 );
+    --_thumb-bg-focus: var( --o-imgcompare-thumbBackgroundFocus, hsl( 0 0 40% / .7 ) );
+    --_thumb-w: var( --o-imgcompare-thumbWidth, min( 5px, .3em ) );
+
+    display: grid;
+    aspect-ratio: var( --ar );
+    background: var( --_bg );
+
+    & > * {
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    .left,
+    .right {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .left {
+        clip-path: polygon( 0% 0%, var( --value ) 0%, var( --value ) 100%, 0% 100% );
+    }
+    .right {
+        clip-path: polygon( 100% 0%, var( --value ) 0%, var( --value ) 100%, 100% 100% );
+    }
+
+    .range {
+        box-sizing: border-box;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        font-family: inherit;
+        background-color: transparent;
+        outline: none;
+        cursor: ew-resize;
+    }
+    .range::-moz-range-thumb {
+        width: var( --_thumb-w );
+        height: 100%;
+        background: var( --_thumb-bg );
+        border: 0;
+        border-radius: 0;
+    }
+    .range::-webkit-slider-thumb {
+        width: var( --_thumb-w );
+        height: 100%;
+        background-color: var( --_thumb-bg );
+        border: 0;
+        border-radius: 0;
+    }
+    .range:focus {
+        opacity: .6;
+    }
+    /*
+    .range:focus::-webkit-slider-thumb {
+        background: var( --_thumb-bg-focus );
+    }
+    .range:focus::-moz-range-thumb {
+        background: var( --_thumb-bg-focus );
+    }
+    */
+    .range::-moz-range-track {
+        box-sizing: border-box;
+        background: transparent;
+        background-size: 100%;
+    }
+    .range::-webkit-slider-runnable-track {
+        box-sizing: border-box;
+        background: transparent;
+        background-size: 100%;
+        height: 100%;
+    }
+    .range,
+    .range::-webkit-slider-runnable-track,
+    .range::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+}
