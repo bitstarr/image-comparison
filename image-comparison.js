@@ -13,17 +13,17 @@ class ImageComparison extends HTMLElement
         // browser calls this method when the element is added to the document
         // (can be called many times if an element is repeatedly added/removed)
 
+        this.slidable();
+
         if ( !this.style.getPropertyValue( '--value' ) )
         {
-            this.setProp( 'value', '50%' );
+            this.setProp( 'value', `${this.slider.value}%` );
         }
 
         if ( this.hasAttribute( 'aspect-ratio' ) )
         {
             this.setProp( 'ar', this.getAttribute( 'aspect-ratio' ) );
         }
-
-        this.slidable();
     }
 
     slidable()
