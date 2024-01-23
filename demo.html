@@ -5,63 +5,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Image Comparison</title>
 <style>
-    :where( :not( iframe, canvas, img, svg, video ):not( svg *, symbol * ) ) {
-        all: unset;
-        display: revert;
-        line-height: var( --font-line );
-    }
-    *, *::before, *::after {
-        box-sizing: border-box;
-    }
-    html {
-        height: 100%;
-        --font-default: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
-        --font-line: calc( 1em + .35rem );
+    @layer base {
+        :where( :not( iframe, canvas, img, svg, video ):not( svg *, symbol * ) ) {
+            all: unset;
+            display: revert;
+            line-height: var( --font-line );
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        html {
+            height: 100%;
+            --font-default: Seravek, 'Gill Sans Nova', Ubuntu, Calibri, 'DejaVu Sans', source-sans-pro, sans-serif;
+            --font-line: calc( 1em + .35rem );
 
-        --wrapper: 60rem;
-        --wrapper-offset: .5fr;
-        @media ( min-width: 40rem ) {
-            --wrapper-offset: 4rem;
+            --wrapper: 60rem;
+            --wrapper-offset: .5fr;
+            @media ( min-width: 40rem ) {
+                --wrapper-offset: 4rem;
+            }
+
+            --outline-size: max( 2px, .08em );
+            --outline-style: solid;
+            --outline-color: rebeccapurple;
+
+        }
+        body {
+            padding-block: 3rem;
+            font: 1em/var( --font-line ) var( --font-default );
+            color: #222;
+            background: #fff;
+            -webkit-font-smoothing: antialiased;
+            text-decoration-thickness: from-font;
+        }
+    }
+    @layer wrap {
+        .wrapping {
+            display: grid;
+            grid-template-columns:
+                [full-start]
+                minmax(1em, 1fr)
+                [mid-start]
+                minmax(0, var( --wrapper-offset ))
+                [main-start]
+                minmax(0, var( --wrapper ))
+                [main-end]
+                minmax(0, var( --wrapper-offset ))
+                [mid-end]
+                minmax(1em, 1fr)
+                [full-end];
+            align-content: start;
+        }
+        .wrapping > * {
+            grid-column: main;
         }
 
+        .wrapping > * + * {
+            margin-top: 2rem;
+        }
     }
-    body {
-        padding-block: 3rem;
-        font: 1em/var( --font-line ) var( --font-default );
-        color: #222;
-        background: #fff;
-        -webkit-font-smoothing: antialiased;
-        text-decoration-thickness: from-font;
-    }
-
-    .wrapping {
-        display: grid;
-        grid-template-columns:
-            [full-start]
-            minmax(1em, 1fr)
-            [mid-start]
-            minmax(0, var( --wrapper-offset ))
-            [main-start]
-            minmax(0, var( --wrapper ))
-            [main-end]
-            minmax(0, var( --wrapper-offset ))
-            [mid-end]
-            minmax(1em, 1fr)
-            [full-end];
-        align-content: start;
-    }
-    .wrapping > * {
-        grid-column: main;
-    }
-
-    .wrapping > * + * {
-        margin-top: 2rem;
-    }
-
 
     figcaption {
         margin-top: 1ex;
         font-size: .9em;
+    }
+
+    .imgcompare:focus-within .range:focus-visible {
+        outline: var( --outline-size ) var( --outline-style ) var( --outline-color );
+        outline-offset: var( --outline-offset, var( --outline-size ) );
+    }
+
+    .otherstyle {
+        --o-imgcompare-thumbBackground: #007;
+        --o-imgcompare-thumbBackgroundFocus: #bada55;
+        --o-imgcompare-thumbWidth: min( 8px, .4em )
     }
 
 </style>
@@ -70,22 +87,22 @@
 <body>
     <main class="wrapping">
         <figure>
-            <image-comparison class="imgcompare" aspect-ratio="4/3">
-                <img class="left" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iLjEiIHgyPSIuNyIgeTE9IjAiIHkyPSIuOCI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGQkFCN0UiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRERENkYzIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IGZpbGw9InVybCgjZ3JhZCkiIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiLz4KICAgIDx0ZXh0IGZpbGw9InJnYmEoMCwwLDAsMC41KSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzAiIGR5PSIxMC41IiBmb250LXdlaWdodD0iYm9sZCIgeD0iNTAlIiB5PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxlZnQgSW1hZ2U8L3RleHQ+Cjwvc3ZnPg==" alt="An image with a gradient background and 'Left Image' written on it" />
-                <img class="right" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iLjEiIHgyPSIuNyIgeTE9IjAiIHkyPSIuOCI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM4RUM1RkMiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRkRCQjJEIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IGZpbGw9InVybCgjZ3JhZCkiIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiLz4KICAgIDx0ZXh0IGZpbGw9InJnYmEoMCwwLDAsMC41KSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzAiIGR5PSIxMC41IiBmb250LXdlaWdodD0iYm9sZCIgeD0iNTAlIiB5PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJpZ2h0IEltYWdlPC90ZXh0Pgo8L3N2Zz4=" alt="An image with a gradient background and 'Right Image' written on it" />
+            <image-comparison class="imgcompare">
+                <img class="before" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iLjEiIHgyPSIuNyIgeTE9IjAiIHkyPSIuOCI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGQkFCN0UiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRERENkYzIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IGZpbGw9InVybCgjZ3JhZCkiIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiLz4KICAgIDx0ZXh0IGZpbGw9InJnYmEoMCwwLDAsMC41KSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzAiIGR5PSIxMC41IiBmb250LXdlaWdodD0iYm9sZCIgeD0iNTAlIiB5PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkxlZnQgSW1hZ2U8L3RleHQ+Cjwvc3ZnPg==" alt="An image with a gradient background and 'Left Image' written on it" />
+                <img class="after" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiIHZpZXdCb3g9IjAgMCAxOTIwIDEwODAiPgogICAgPGRlZnM+CiAgICAgICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiB4MT0iLjEiIHgyPSIuNyIgeTE9IjAiIHkyPSIuOCI+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM4RUM1RkMiLz4KICAgICAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjRkRCQjJEIi8+CiAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDwvZGVmcz4KICAgIDxyZWN0IGZpbGw9InVybCgjZ3JhZCkiIHdpZHRoPSIxOTIwIiBoZWlnaHQ9IjEwODAiLz4KICAgIDx0ZXh0IGZpbGw9InJnYmEoMCwwLDAsMC41KSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMzAiIGR5PSIxMC41IiBmb250LXdlaWdodD0iYm9sZCIgeD0iNTAlIiB5PSI1MCUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJpZ2h0IEltYWdlPC90ZXh0Pgo8L3N2Zz4=" alt="An image with a gradient background and 'Right Image' written on it" />
             </image-comparison>
             <figcaption>
-                Comparing two base64 encoded SVGs in a 4/3 aspect ratio.</p>
+                Comparing two base64 encoded SVGs in the default aspect ratio of 16/9.</p>
             </figcaption>
         </figure>
 
-        <figure>
-            <image-comparison class="imgcompare">
-                <img class="left" src="https://picsum.photos/960/540?random=1" alt="A random image from Unsplash" />
-                <img class="right" src="https://picsum.photos/960/540?random=2" alt="Another random image from Unsplash" />
+        <figure class="otherstyle">
+            <image-comparison class="imgcompare" aspect-ratio="4/3">
+                <img class="before" src="https://picsum.photos/960/720?random=1" alt="A random image from Unsplash" />
+                <img class="after" src="https://picsum.photos/960/720?random=2" alt="Another random image from Unsplash" />
             </image-comparison>
             <figcaption>
-                Comparing two random images from Unsplash with the default aspect ratio of 16/9
+                Comparing two random images from Unsplash in a 4/3 aspect ratio. Also the style of the 'drag bar' is altered via CSS custom properties.
             </figcaption>
         </figure>
 

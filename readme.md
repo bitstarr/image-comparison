@@ -11,8 +11,8 @@ A web component to create an image comparison element. Based off of [this Codepe
 <link rel="stylesheet" href="image-comparison.css">
 
 <image-comparison class="imgcompare">
-    <img class="left" src="https://picsum.photos/960/540?random=1" alt="A random image from Unsplash" />
-    <img class="right" src="https://picsum.photos/960/540?random=2" alt="Another random image from Unsplash" />
+    <img class="before" src="https://picsum.photos/960/540?random=1" alt="A random image from Unsplash" />
+    <img class="after" src="https://picsum.photos/960/540?random=2" alt="Another random image from Unsplash" />
 </image-comparison>
 ```
 

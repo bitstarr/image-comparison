@@ -33,6 +33,7 @@ class ImageComparison extends HTMLElement
         this.slider.min = 0;
         this.slider.max = 100;
         this.slider.value = 50;
+        this.slider.step = 0.5;
         this.slider.classList.add( 'range' );
         this.append( this.slider );
 
